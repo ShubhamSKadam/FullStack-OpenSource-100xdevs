@@ -7,6 +7,7 @@ Try running it for
 Hint - use Date class exposed in JS
 */
 
+// performance.now() is used to get the current time in miliseconds
 function calculateTime(n) {
   var sum = 0;
   for (var i = 0; i < n; i++) {
@@ -21,4 +22,4 @@ const endTime = performance.now();
 
 const duration = endTime - startTime;
 
-console.log(duration/1000);
+console.log(duration / 1000);
