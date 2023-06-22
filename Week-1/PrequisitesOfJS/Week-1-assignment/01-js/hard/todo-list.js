@@ -11,9 +11,8 @@
   - `npm run test-todo-list`
 */
 
-
 class Todo {
-  
+
 }
 
 module.exports = Todo;
