@@ -3,4 +3,16 @@
 */
 
 function wait(n) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const data = "resolved";
+      resolve(data);
+    }, n * 1000);
+  });
 }
+
+wait(5)
+  .then(() => {
+    console.log("done");
+  })
+  .catch((err) => console.error(err));
