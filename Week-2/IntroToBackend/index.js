@@ -16,8 +16,12 @@ function handleFirstRequest(req, res) {
   res.send(`The sum from 1 to ${counter} is ${answer}`);
 }
 
-app.get("/handleSum", handleFirstRequest);
+function createUser(req, res) {
+  res.send("Hello World");
+}
 
+app.get("/handleSum", handleFirstRequest);
+app.get("/createUser", createUser);
 function started() {
   console.log(`Example app listening on port ${port}`);
 }
