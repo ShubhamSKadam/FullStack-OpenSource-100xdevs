@@ -43,11 +43,21 @@ function handleFirstRequest(req, res) {
   res.status(200).send(answerObject);
 }
 
-function createUser(req, res) {
-  res.send("Hello World");
+function givePage(req, res) {
+  res.send(`<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hello from page</title>
+  </head>
+  <body>
+    <b>Hi Shubham</b>
+  </body>
+</html>
+`);
 }
 
 app.post("/handleSum", handleFirstRequest);
+app.get("/", givePage);
 // app.get("/createUser", createUser);
 function started() {
   console.log(`Example app listening on port ${port}`);
