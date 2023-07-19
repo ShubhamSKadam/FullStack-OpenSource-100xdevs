@@ -22,12 +22,25 @@ function calculateSum(counter) {
   return sum;
 }
 
+function calculateMul(counter) {
+  var answer = 1;
+  for (let i = 1; i <= counter; i++) {
+    answer = answer * i;
+  }
+  return answer;
+}
+
 function handleFirstRequest(req, res) {
-  console.log(req.body);
   const counter = req.body.counter;
   // const counter = req.query.counter;
-  var answer = calculateSum(counter);
-  res.send(`The sum from 1 to ${counter} is ${answer}`);
+
+  var sumAnswer = calculateSum(counter);
+  var mulAnswer = calculateMul(counter);
+  var answerObject = {
+    sum: sumAnswer,
+    mul: mulAnswer,
+  };
+  res.status(200).send(answerObject);
 }
 
 function createUser(req, res) {
