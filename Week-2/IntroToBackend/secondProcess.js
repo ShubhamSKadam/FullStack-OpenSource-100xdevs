@@ -1,4 +1,3 @@
-const { json } = require("body-parser");
 
 var sendObj = {
   method: "GET",
