@@ -23,7 +23,7 @@ function calculateSum(counter) {
 }
 
 function handleFirstRequest(req, res) {
-  const counter = req.body.counter;
+  const counter = req.query.counter;
   // const counter = req.query.counter;
 
   var sumAnswer = calculateSum(counter);
@@ -43,7 +43,7 @@ function givePage(req, res) {
 `);
 }
 
-app.post("/handleSum", handleFirstRequest);
+app.get("/handleSum", handleFirstRequest);
 app.get("/", givePage);
 // app.get("/createUser", createUser);
 function started() {
