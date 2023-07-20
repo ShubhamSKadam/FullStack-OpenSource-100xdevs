@@ -22,25 +22,12 @@ function calculateSum(counter) {
   return sum;
 }
 
-function calculateMul(counter) {
-  var answer = 1;
-  for (let i = 1; i <= counter; i++) {
-    answer = answer * i;
-  }
-  return answer;
-}
-
 function handleFirstRequest(req, res) {
   const counter = req.body.counter;
   // const counter = req.query.counter;
 
   var sumAnswer = calculateSum(counter);
-  var mulAnswer = calculateMul(counter);
-  var answerObject = {
-    sum: sumAnswer,
-    mul: mulAnswer,
-  };
-  res.status(200).send(answerObject);
+  res.status(200).send(sumAnswer.toString());
 }
 
 function givePage(req, res) {
