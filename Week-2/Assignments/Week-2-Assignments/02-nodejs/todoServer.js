@@ -98,9 +98,38 @@ app.post("/todos/", (req, res) => {
 // update an existing todo item by ID
 app.put("/todos/:id", (req, res) => {
   const id = req.params.id;
-  const updatedTask = req.body;
   const task = TaskLists.find((task) => task.id == id);
-  task.completed = req.body.completed;
+  if (task) {
+    task.title = req.body.title;
+    task.completed = req.body.completed;
+    res.status(200).json(task);
+  } else {
+    res.status(404).send("Task not found");
+  }
 });
+
+// delete a todo item by ID
+app.delete("/todos/:id", (req, res) => {
+  const id = req.params.id;
+  const task = TaskLists.find((task) => task.id == id);
+  if (task) {
+    const index = TaskLists.indexOf(task);
+    TaskLists.splice(index, 1);
+    res.status(200).json(task);
+  } else {
+    res.status(404).send("Task not found");
+  }
+});
+
+// app.put("/todos/:id", (req, res) => {
+//   const id = req.params.id;
+//   const task = TaskLists.find((task) => task.id === id);
+//   if (task) {
+//     task.completed = req.body.completed;
+//     res.status(200);
+//   } else {
+//     res.status(404);
+//   }
+// });
 
 module.exports = app;
