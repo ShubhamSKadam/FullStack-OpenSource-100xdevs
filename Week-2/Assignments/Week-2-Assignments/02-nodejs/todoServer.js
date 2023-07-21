@@ -39,11 +39,68 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-const express = require('express');
-const bodyParser = require('body-parser');
-
+const express = require("express");
+const bodyParser = require("body-parser");
 const app = express();
+const port = 3000;
 
 app.use(bodyParser.json());
+
+const TaskLists = [
+  {
+    title: "Complete User Authentication",
+    description: "Finish the authentication part from the udemy course",
+    id: 1,
+    completed: false,
+  },
+  {
+    title: "Assignment from 100xdev",
+    description: "Complete the assignment from 100xdev",
+    id: 2,
+    completed: false,
+  },
+  {
+    title: "Workout",
+    description: "Start Working Out and build a routine",
+    id: 3,
+    completed: false,
+  },
+];
+
+app.listen(port, () => {
+  console.log(`app listening on port ${port}`);
+});
+
+// Logic to return all the tasks
+app.get("/todos", (req, res) => {
+  res.status(200).json(TaskLists);
+});
+
+// Logic to retrieve a specific todo by Id
+app.get("/todos/:id", (req, res) => {
+  const id = req.params.id;
+  const task = TaskLists.find((task) => task.id == id);
+  if (task) {
+    res.status(200).json(task);
+  } else {
+    res.status(404).send("Task not found");
+  }
+});
+
+// Logic to create a new todo item
+app.post("/todos/", (req, res) => {
+  const newTask = req.body;
+  newTask.id = TaskLists.length + 1;
+  TaskLists.push(newTask);
+  res.status(201).json({ id: newTask.id });
+});
+
+// update an existing todo item by ID
+app.put("/todos/:id", (req, res) => {
+  const id = req.params.id;
+  const updatedTask = req.body;
+  const task = TaskLists.find((task) => task.id == id);
+  task.completed = req.body.completed;
+});
 
 module.exports = app;
