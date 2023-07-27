@@ -1,0 +1,20 @@
+const TaskLists = [
+  {
+    title: "Complete User Authentication",
+    description: "Finish the authentication part from the udemy course",
+    id: 1,
+    completed: false,
+  },
+  {
+    title: "Assignment from 100xdev",
+    description: "Complete the assignment from 100xdev",
+    id: 2,
+    completed: false,
+  },
+  {
+    title: "Workout",
+    description: "Start Working Out and build a routine",
+    id: 3,
+    completed: false,
+  },
+];
