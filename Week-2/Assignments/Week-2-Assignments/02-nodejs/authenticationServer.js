@@ -29,9 +29,62 @@
   Testing the server - run `npm run test-authenticationServer` command in terminal
  */
 
-const express = require("express")
+const express = require("express");
 const PORT = 3000;
 const app = express();
 // write your logic here, DONT WRITE app.listen(3000) when you're running tests, the tests will automatically start the server
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
+const users = [];
+
+app.use(express.json());
+
+app.post("/signup", (req, res) => {
+  const { username, password, firstName, lastName } = req.body;
+  const user = users.find((user) => user.username === username);
+  if (user) {
+    res.status(400).send("Username already exists");
+  } else {
+    const newUser = {
+      id: users.length + 1,
+      username,
+      password,
+      firstName,
+      lastName,
+    };
+    users.push(newUser);
+    res.status(201).send("User created successfully");
+  }
+});
+
+app.post("/login", (req, res) => {
+  const { username, password } = req.body;
+  const user = users.find(
+    (user) => user.username === username && user.password === password
+  );
+  if (user) {
+  } else {
+    res.status(401).send("Invalid credentials");
+  }
+});
+
+app.get("/data", (req, res) => {
+  const { username, password } = req.headers;
+  const user = users.find(
+    (user) => user.username === username && user.password === password
+  );
+  if (user) {
+    const usersData = users.map((user) => {
+      const { id, firstName, lastName } = user;
+      return { id, firstName, lastName };
+    });
+    res.status(200).json({ users: usersData });
+  } else {
+    res.status(401).send("Invalid credentials");
+  }
+});
 
 module.exports = app;
