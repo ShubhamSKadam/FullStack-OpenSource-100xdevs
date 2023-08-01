@@ -66,6 +66,7 @@ app.post("/login", (req, res) => {
     (user) => user.username === username && user.password === password
   );
   if (user) {
+    res.status(200).send("You have logged in successfully");
   } else {
     res.status(401).send("Invalid credentials");
   }

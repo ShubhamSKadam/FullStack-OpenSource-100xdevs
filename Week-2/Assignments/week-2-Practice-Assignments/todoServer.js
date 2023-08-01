@@ -75,9 +75,8 @@ app.get("/", (req, res) => {
 // });
 
 // GET todos by a specific id on route /:id
-app.get("/:id", (req, res) => {
+app.get("/todos/:id", (req, res) => {
   const id = req.params.id;
-  console.log(id);
   const isPresent = todo.find((item) => item.id == id);
   console.log(isPresent);
   if (isPresent) {
@@ -94,4 +93,22 @@ app.post("/todos", (req, res) => {
   userTodo.id = newId;
   todo.push(userTodo);
   res.status(200).send(newId.toString());
+});
+
+// PUT request for updating a todo item by id on route /todos/:id
+app.put("/todos/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const newTodo = req.body;
+  const isPresent = todo.find((item) => item.id == id);
+  if (isPresent) {
+    todo[isPresent] = {
+      id: id,
+      title: newTodo.title,
+      description: newTodo.description,
+      completed: newTodo.completed,
+    };
+    res.status(200).send("Successful updated");
+  } else {
+    res.status(404).send("Item not found");
+  }
 });
