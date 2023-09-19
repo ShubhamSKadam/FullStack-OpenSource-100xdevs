@@ -39,97 +39,84 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
+
 const express = require("express");
-const bodyParser = require("body-parser");
 const app = express();
+
 const port = 3000;
 
-app.use(bodyParser.json());
-
-const TaskLists = [
+let ToDoList = [
   {
-    title: "Complete User Authentication",
-    description: "Finish the authentication part from the udemy course",
     id: 1,
-    completed: false,
-  },
-  {
-    title: "Assignment from 100xdev",
-    description: "Complete the assignment from 100xdev",
-    id: 2,
-    completed: false,
-  },
-  {
-    title: "Workout",
-    description: "Start Working Out and build a routine",
-    id: 3,
+    title: "Life Customer Code",
+    description: "Understand the flow of the code.",
     completed: false,
   },
 ];
 
+// Middleware to parse json data from request body
+app.use(express.json());
+
 app.listen(port, () => {
-  console.log(`app listening on port ${port}`);
+  console.log(`Listening on Port ${port}`);
 });
 
-// Logic to return all the tasks
+app.get("/", (req, res) => {
+  res.send("Go to /todos to get your todo list");
+});
+
+// Route to get all todos
 app.get("/todos", (req, res) => {
-  res.status(200).json(TaskLists);
+  res.send(ToDoList).status(200);
 });
 
-// Logic to retrieve a specific todo by Id
+// Route to get a specific todo item by id
 app.get("/todos/:id", (req, res) => {
-  const id = req.params.id;
-  const task = TaskLists.find((task) => task.id == id);
+  const id = parseInt(req.params.id);
+  const task = ToDoList.find((item) => item.id === id);
+
   if (task) {
-    res.status(200).json(task);
+    res.send(task).status(200);
   } else {
-    res.status(404).send("Task not found");
+    res.send(404);
   }
 });
 
-// Logic to create a new todo item
-app.post("/todos/", (req, res) => {
-  const newTask = req.body;
-  newTask.id = TaskLists.length + 1;
-  TaskLists.push(newTask);
-  res.status(201).json({ id: newTask.id });
+// Route to create a new todo
+app.post("/todos", (req, res) => {
+  const todoItem = req.body;
+  todoItem.id = ToDoList.length + 1;
+  ToDoList.push(todoItem);
+  res.send(`Created with the Id ${todoItem.id}`).status(201);
 });
 
-// update an existing todo item by ID
+// Route to update an existing todo Item by it's id
 app.put("/todos/:id", (req, res) => {
-  const id = req.params.id;
-  const task = TaskLists.find((task) => task.id == id);
-  if (task) {
-    task.title = req.body.title;
-    task.completed = req.body.completed;
-    res.status(200).json(task);
+  const id = parseInt(req.params.id);
+  const todoIndex = ToDoList.findIndex((item) => item.id === id);
+  if (todoIndex >= 0) {
+    ToDoList[todoIndex] = req.body;
+    ToDoList[todoIndex].id = id;
+    res.send(200);
   } else {
-    res.status(404).send("Task not found");
+    res.send(404);
   }
 });
 
-// delete a todo item by ID
+// Route to delete a todo item by it's id
 app.delete("/todos/:id", (req, res) => {
-  const id = req.params.id;
-  const task = TaskLists.find((task) => task.id == id);
-  if (task) {
-    const index = TaskLists.indexOf(task);
-    TaskLists.splice(index, 1);
-    res.status(200).json(task);
+  const id = parseInt(req.params.id);
+  const isTodoPresent = ToDoList.find((item) => item.id === id);
+
+  if (isTodoPresent) {
+    ToDoList = ToDoList.filter((item) => item.id !== id);
+    res.send(200);
   } else {
-    res.status(404).send("Task not found");
+    res.send(404);
   }
 });
 
-// app.put("/todos/:id", (req, res) => {
-//   const id = req.params.id;
-//   const task = TaskLists.find((task) => task.id === id);
-//   if (task) {
-//     task.completed = req.body.completed;
-//     res.status(200);
-//   } else {
-//     res.status(404);
-//   }
-// });
-
-module.exports = app;
+// Any undefined route will return a 404 error
+app.use((req, res) => {
+  res.status(404).send("404 Not Found");
+});
