@@ -16,7 +16,14 @@
       }
 
       fetch("http://localhost:3000/todos/", {
-        method: "GET",
+        method: "POST",
+        body: JSON.stringify({
+          title: "gym",
+          description: "going to the gym",
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
       }).then(callback);
     }
   </script>
