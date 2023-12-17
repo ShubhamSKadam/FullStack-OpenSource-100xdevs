@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const path = require("path");
-const cors = require('cors');
+const cors = require("cors");
 
 const app = express();
 
@@ -66,7 +66,7 @@ app.delete("/todos/:id", (req, res) => {
     res.status(404).send();
   } else {
     todos = removeAtIndex(todos, todoIndex);
-    res.status(200).send();
+    res.status(200).send(req.params.id);
   }
 });
 
